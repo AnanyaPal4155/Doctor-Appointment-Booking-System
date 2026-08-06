@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Patient Registration</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/register.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">Clinic System</div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/register.html">Register</a></li>
+  </ul>
+</nav>
+
+<!-- REGISTRATION CARD -->
+<div class="container">
+  <h2>Patient Registration</h2>
+
+  <form action="/patient/addPatient" method="post">
+
+    <label>Full Name</label>
+    <input type="text" name="name" required>
+
+    <label>Phone Number</label>
+    <input type="text" name="phoneNo" required pattern="[0-9]{10}"
+           title="Enter 10 digit phone number">
+
+    <label>Age</label>
+    <input type="number" name="age" required   min="1"
+           max="120">
+
+    <label>Email</label>
+    <input type="email" name="email" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required minlength="6">
+
+    <button type="submit">Register</button>
+  </form>
+</div>
+
+</body>
+</html>

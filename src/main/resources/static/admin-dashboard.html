@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+</head>
+<body>
+
+<nav>
+    <h2>Admin Panel</h2>
+    <a href="/admin/logout">Logout</a>
+</nav>
+
+<div class="container">
+    <h1>Admin Dashboard</h1>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+        <div class="card booked">
+            <h3>Total Booked</h3>
+            <p id="totalBooked">0</p>
+        </div>
+        <div class="card cancelled">
+            <h3>Total Cancelled</h3>
+            <p id="totalCancelled">0</p>
+        </div>
+    </div>
+
+    <ul>
+        <li onclick="location.href='/admin-add-slot.html'">
+            Manage Slots
+        </li>
+    </ul>
+
+
+    <!-- Appointments Table -->
+    <table id="appointmentsTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Patient Name</th>
+            <th>Phone</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- JS will populate appointments here -->
+        </tbody>
+    </table>
+
+    <!-- Reschedule Dropdown -->
+    <div id="rescheduleDiv" style="display:none; margin-top:20px;">
+        <h3>Reschedule Appointment</h3>
+        <select id="rescheduleSlot"></select>
+        <button onclick="submitReschedule()">Reschedule</button>
+        <button onclick="hideReschedule()">Cancel</button>
+    </div>
+</div>
+
+<script>
+    let appointmentToReschedule = null;
+
+    // Fetch summary counts
+    function loadSummary() {
+        fetch("/admin/bookedCount")
+            .then(res => res.json())
+            .then(count => document.getElementById("totalBooked").innerText = count);
+
+        fetch("/admin/cancelledCount")
+            .then(res => res.json())
+            .then(count => document.getElementById("totalCancelled").innerText = count);
+    }
+
+    // Fetch all appointments
+    function loadAppointments() {
+        fetch("/admin/appointments")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector("#appointmentsTable tbody");
+            tbody.innerHTML = "";
+
+            data.forEach(app => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${app.appointmentId}</td>
+                    <td>${app.patientName}</td>
+                    <td>${app.patientPhone}</td>
+                    <td>${app.doctorName}</td>
+                    <td>${app.date}</td>
+                    <td>${app.time}</td>
+                    <td>${app.status}</td>
+                    <td>
+                        ${app.status === 'BOOKED' ? `
+                            <button onclick="cancelAppointment(${app.appointmentId})">Cancel</button>
+                            <button onclick="showReschedule(${app.appointmentId})">Reschedule</button>
+                        ` : 'N/A'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => alert("Error fetching appointments: " + err));
+    }
+
+    // Cancel appointment
+    function cancelAppointment(id) {
+        if(confirm("Are you sure to cancel this appointment?")) {
+            fetch(`/BookAppointment/cancel/${id}`, { method: 'PUT' })
+            .then(res => res.text())
+            .then(msg => {
+                alert(msg);
+                loadAppointments();
+                loadSummary();
+            });
+        }
+    }
+
+    // Show Reschedule Dropdown
+    function showReschedule(appointmentId) {
+        appointmentToReschedule = appointmentId;
+        document.getElementById("rescheduleDiv").style.display = "block";
+
+        fetch(`/slot/freeSlots`)
+        .then(res => res.json())
+        .then(slots => {
+            const select = document.getElementById("rescheduleSlot");
+            select.innerHTML = "";
+            slots.forEach(slot => {
+                select.innerHTML += `<option value="${slot.slotId}">
+                    ${slot.date} ${slot.time} (${slot.capacity - slot.bookedCount} seats left)
+                </option>`;
+            });
+        });
+    }
+
+    // Hide Reschedule
+    function hideReschedule() {
+        document.getElementById("rescheduleDiv").style.display = "none";
+        appointmentToReschedule = null;
+    }
+
+    // Submit Reschedule
+    function submitReschedule() {
+        const newSlotId = document.getElementById("rescheduleSlot").value;
+        if(!appointmentToReschedule) return;
+
+        fetch(`/BookAppointment/update?appointmentId=${appointmentToReschedule}&newSlotId=${newSlotId}`, { method: 'PUT' })
+            .then(res => res.text())
+            .then(msg => {
+                alert(msg);
+                hideReschedule();
+                loadAppointments();
+                loadSummary();
+            })
+            .catch(err => alert("Error: " + err));
+    }
+
+    // Initial load
+    loadSummary();
+    loadAppointments();
+</script>
+
+</body>
+</html>

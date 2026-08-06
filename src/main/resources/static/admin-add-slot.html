@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manage Slots</title>
+  <link rel="stylesheet" href="/css/admin-add-slot.css">
+</head>
+<body>
+
+<nav>
+  <h2>Admin Panel</h2>
+  <a href="/admin-dashboard.html">Back</a>
+</nav>
+
+<div class="container">
+
+  <h2>Add New Slot</h2>
+
+  <form id="slotForm">
+    <label>Date</label>
+    <input type="date" id="date" required>
+
+    <label>Time</label>
+    <input type="text" id="time" placeholder="10:00 AM - 10:30 AM" required>
+
+    <label>Capacity</label>
+    <input type="number" id="capacity" required>
+
+    <button type="submit">Add Slot</button>
+  </form>
+
+  <h2>All Slots</h2>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Capacity</th>
+      <th>Booked</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="slotTableBody"></tbody>
+  </table>
+
+</div>
+
+<script src="/js/slot.js"></script>
+</body>
+</html>
