@@ -4,6 +4,7 @@ import com.example.Appointment.Booking.System.DTO.Admin.PatientAdminDTO;
 import com.example.Appointment.Booking.System.Entity.Patient;
 import com.example.Appointment.Booking.System.Repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +17,13 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Patient registerPatient(Patient patient) {
+        // Hash the password before saving
+        String hashedPassword = passwordEncoder.encode(patient.getPassword());
+        patient.setPassword(hashedPassword);
         return patientRepo.save(patient);
     }
 
@@ -53,12 +60,22 @@ public class PatientService {
         return patientRepo.count();
     }
 
-//    login
+    //    login
     public Patient login(String email, String password) {
-        Optional<Patient> patient =
-                patientRepo.findByEmailAndPassword(email, password);
+        Optional<Patient> patientOpt = patientRepo.findByEmail(email);
 
-        return patient.orElse(null);
+        if (patientOpt.isEmpty()) {
+            return null;
+        }
+
+        Patient patient = patientOpt.get();
+
+        // Compare plain password with hashed password
+        if (passwordEncoder.matches(password, patient.getPassword())) {
+            return patient;
+        }
+
+        return null;
     }
 
 
