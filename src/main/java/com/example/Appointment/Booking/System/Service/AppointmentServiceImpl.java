@@ -67,7 +67,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                "Date: " + slot.getDate() + "\n" +
                "Time: " + slot.getTime() + "\n\n" +
                "Thank you!";
-       notificationService.sendEmail(patient.getEmail(), subject, body);
+       try {
+           notificationService.sendEmail(patient.getEmail(), subject, body);
+       } catch (Exception e) {
+           System.out.println("Email sending failed: " + e.getMessage());
+       }
 
 //       return bookingresponse
 
@@ -108,7 +112,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 " on " + appointment.getSlots().getDate() + " at " +
                 appointment.getSlots().getTime() + " has been canceled.\n\n" +
                 "Thank you!";
-        notificationService.sendEmail(appointment.getPatient().getEmail(), subject, body);
+        try {
+            notificationService.sendEmail(appointment.getPatient().getEmail(), subject, body);
+        } catch (Exception e) {
+            System.out.println("Email sending failed: " + e.getMessage());
+        }
     }
 
 //    update appointment
@@ -152,7 +160,11 @@ public void updateAppointment(Long appointmentId, Long newSlotId) {
             "New Date: " + newSlot.getDate() + "\n" +
             "New Time: " + newSlot.getTime() + "\n\n" +
             "Thank you!";
-    notificationService.sendEmail(appointment.getPatient().getEmail(), subject, body);
+    try {
+        notificationService.sendEmail(appointment.getPatient().getEmail(), subject, body);
+    } catch (Exception e) {
+        System.out.println("Email sending failed: " + e.getMessage());
+    }
 }
 //get appointment history using patientId
 @Override
