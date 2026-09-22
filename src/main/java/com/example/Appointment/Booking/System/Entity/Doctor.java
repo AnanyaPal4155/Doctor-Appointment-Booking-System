@@ -28,7 +28,7 @@ public class Doctor {
     private int experience;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
-//    @JsonIgnore
+    @JsonIgnore
     List<Appointment> doctorAppointments;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
