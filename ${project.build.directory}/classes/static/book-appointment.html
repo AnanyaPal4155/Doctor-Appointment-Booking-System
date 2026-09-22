@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Appointment</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🏥 ClinicCare</div>
+    <ul>
+        <li><a href="patient-dashboard.html">Dashboard</a></li>
+        <li><a href="book-appointment.html" class="active">Book Appointment</a></li>
+        <li><a href="my-appointments.html">My Appointments</a></li>
+        <li><a href="/patient/logout">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="dashboard-container">
+    <h1>Book an Appointment</h1>
+    <form action="/patient/appointments/book" method="post">
+        <label for="slot">Available Slots:</label>
+        <select name="slotId" id="slot" required>
+            <!-- JS will populate options here -->
+        </select>
+
+        <button type="submit">Book Appointment</button>
+    </form>
+</div>
+
+<script>
+    // Fetch available slots from backend and populate dropdown
+
+  fetch('/slot/freeSlots')  // matches SlotController
+    .then(response => response.json())
+    .then(slots => {
+        const slotSelect = document.getElementById('slot');
+        slots.forEach(slot => {
+            const option = document.createElement('option');
+            option.value = slot.slotId;
+            option.text = `${slot.date} ${slot.time} (${slot.capacity - slot.bookedCount} seats left)`;
+            slotSelect.add(option);
+        });
+    })
+    .catch(err => console.error('Error fetching slots:', err));
+</script>
+
+
+
+
+</body>
+</html>

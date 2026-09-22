@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinic Appointment Booking System</title>
+    <link rel="stylesheet" href="/CSS/index.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">
+        🏥 ClinicCare
+    </div>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="register.html">Register</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="/appointments/book">Book Appointment</a></li>
+<!--        <li><a href="/slots">Slots</a></li>-->
+        <li><a href="admin-login.html">Admin</a></li>
+    </ul>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <h1>Clinic Appointment Booking System</h1>
+    <p>
+        A simple and reliable solution for patient registration,
+        appointment scheduling, and clinic management.
+    </p>
+    <button onclick="location.href='register.html'">
+        Get Started
+    </button>
+</section>
+
+<!--&lt;!&ndash; WORKFLOW SECTION &ndash;&gt;-->
+<!--<section class="workflow">-->
+<!--    <h2>How It Works</h2>-->
+<!--    <div class="steps">-->
+<!--        <div class="step">1. Register as Patient</div>-->
+<!--        <div class="step">2. View Available Slots</div>-->
+<!--        <div class="step">3. Book Appointment</div>-->
+<!--        <div class="step">4. Manage Appointments</div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!-- FEATURES SECTION -->
+<section class="features">
+    <h2>System Features</h2>
+
+    <div class="feature-grid">
+
+        <div class="feature-card" onclick="location.href='login.html'">
+            <h3>Patient Login</h3>
+            <p>Login to book or view your appointments.</p>
+        </div>
+
+        <div class="feature-card" onclick="location.href='register.html'">
+            <h3>Patient Registration</h3>
+            <p>Secure patient registration with validation.</p>
+        </div>
+
+        <div class="feature-card" onclick="location.href='/appointments/book'">
+            <h3>Book Appointment</h3>
+            <p>Book appointments based on available slots.</p>
+        </div>
+
+<!--        <div class="feature-card" onclick="location.href='/slots'">-->
+<!--            <h3>View Slots</h3>-->
+<!--            <p>Check slot availability and capacity.</p>-->
+<!--        </div>-->
+
+        <div class="feature-card" onclick="location.href='/admin-login.html'">
+            <h3>Admin Dashboard</h3>
+            <p>Restricted access for clinic admin.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Clinic Appointment Booking System</p>
+    <p>MCA Minor Project</p>
+</footer>
+
+</body>
+</html>
